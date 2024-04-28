@@ -39,20 +39,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: ListView(scrollDirection: Axis.vertical, children: [
-            const SizedBox(height: 20),
-            _heading(context),
-            _searchBar(context),
-            _mainmenu(context),
-            const SizedBox(height: 20)
-          ]),
-        ),
-      ),
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: ListView(scrollDirection: Axis.vertical, children: [
+        const SizedBox(height: 20),
+        _heading(context),
+        _searchBar(context),
+        _mainmenu(context),
+        const SizedBox(height: 20)
+      ]),
     );
   }
 
@@ -71,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                       fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 const Text(
-                  "Welcome to Sūgaku app.",
+                  "Welcome to Sugab app.",
                 ),
               ],
             ),
@@ -145,13 +141,12 @@ class _HomePageState extends State<HomePage> {
                   ]
                 : [
                     for (final item in filteredItems)
-                      _mainmenuitem(
-                          context, item.title, item.icon, item.page, item.color)
+                      _mainmenuitem(context, item.title, item.icon, item.page)
                   ]));
   }
 
-  Widget _mainmenuitem(BuildContext context, String? title, IconData? icon,
-      Widget? page, Color? color) {
+  Widget _mainmenuitem(
+      BuildContext context, String? title, IconData? icon, Widget? page) {
     return Container(
       margin: const EdgeInsets.only(top: 12),
       child: TextButton(
@@ -163,7 +158,7 @@ class _HomePageState extends State<HomePage> {
         },
         style: TextButton.styleFrom(
             padding: const EdgeInsets.all(18),
-            backgroundColor: color!,
+            backgroundColor: Colors.black,
             foregroundColor: const Color.fromARGB(174, 0, 0, 0),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
@@ -171,9 +166,12 @@ class _HomePageState extends State<HomePage> {
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text(
             title!,
-            style: const TextStyle(fontSize: 18),
+            style: const TextStyle(fontSize: 18, color: Colors.white),
           ),
-          Icon(icon!)
+          Icon(
+            icon!,
+            color: Colors.white,
+          )
         ]),
       ),
     );

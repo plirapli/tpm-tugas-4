@@ -1,38 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:tpm_tugas_4/view/main_menu/prime.dart';
 
 class AppMenu {
   String? title;
   IconData? icon;
   Widget? page;
-  Color? color;
 
-  AppMenu({this.title, this.icon, this.page, this.color});
+  AppMenu({this.title, this.icon, this.page});
 }
 
 List<AppMenu> menuItems = [
   AppMenu(
-      title: "Group Members",
-      icon: Icons.group,
-      page: null,
-      color: const Color.fromARGB(255, 128, 255, 210)),
+    title: "Group Members",
+    icon: Icons.group,
+    page: null,
+  ),
   AppMenu(
-      title: "Prime Numbers",
-      icon: Icons.pin,
-      page: null,
-      color: const Color.fromARGB(255, 151, 238, 255)),
+    title: "Prime Numbers",
+    icon: Icons.pin_outlined,
+    page: const PrimePage(),
+  ),
   AppMenu(
-      title: "Stopwatch",
-      icon: Icons.calculate,
-      page: null,
-      color: const Color.fromARGB(255, 255, 247, 140)),
+    title: "Triangle",
+    icon: Icons.change_history,
+    page: null,
+  ),
   AppMenu(
-      title: "Triangle",
-      icon: Icons.calculate,
-      page: null,
-      color: const Color.fromARGB(255, 255, 247, 140)),
+    title: "Premier League Clubs",
+    icon: Icons.sports_soccer,
+    page: null,
+  ),
   AppMenu(
-      title: "Premier League Clubs",
-      icon: Icons.calculate,
-      page: null,
-      color: const Color.fromARGB(255, 255, 247, 140)),
+    title: "Favorite",
+    icon: Icons.star,
+    page: null,
+  ),
 ];
