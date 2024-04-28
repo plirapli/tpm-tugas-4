@@ -18,7 +18,7 @@ class _AboutMePageState extends State<AboutMePage> {
         appBar: AppBar(
           title: const Text(
             "Group Members",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontSize: 18),
           ),
           iconTheme: const IconThemeData(color: Colors.white),
           backgroundColor: Colors.black,
@@ -60,30 +60,9 @@ class _AboutMePageState extends State<AboutMePage> {
         ));
   }
 
-  // Widget _groupContainer(BuildContext context) {
-  //   double parentHeight = MediaQuery.of(context).size.height;
-
-  //   return Expanded(
-  //     child: Container(
-  //         margin: EdgeInsets.only(top: parentHeight <= 640 ? 6 : 20),
-  //         child: ListView(
-  //           scrollDirection:
-  //               parentHeight <= 640 ? Axis.vertical : Axis.horizontal,
-  //           children: [
-  //             SizedBox(width: parentHeight <= 640 ? 0 : 24),
-  //             _groupMenuItem(context, me),
-  //           ],
-  //         )),
-  //   );
-  // }
-
   Widget _groupMenuItem(BuildContext context, Members member) {
-    double parentWidth = MediaQuery.of(context).size.width;
-    double parentHeight = MediaQuery.of(context).size.height;
-
     return Container(
-      width: parentWidth * 0.8,
-      margin: EdgeInsets.only(top: 14),
+      margin: const EdgeInsets.only(top: 14),
       child: Column(children: [
         Container(
             height: 320,

@@ -21,13 +21,14 @@ class _PrimePageState extends State<PrimePage> {
         appBar: AppBar(
           title: const Text(
             "Prime Number Check",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontSize: 18),
           ),
+          iconTheme: const IconThemeData(color: Colors.white),
           backgroundColor: Colors.black,
         ),
         body: Container(
           height: MediaQuery.of(context).size.height,
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           color: const Color.fromARGB(255, 249, 249, 249),
           child: ListView(scrollDirection: Axis.vertical, children: [
             const SizedBox(height: 20),
