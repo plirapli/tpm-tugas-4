@@ -16,13 +16,23 @@ List<AppMenu> menuItems = [
       page: null,
       color: const Color.fromARGB(255, 128, 255, 210)),
   AppMenu(
-      title: "Odd or Even",
+      title: "Prime Numbers",
       icon: Icons.pin,
       page: null,
       color: const Color.fromARGB(255, 151, 238, 255)),
   AppMenu(
-      title: "Sum & Sub",
+      title: "Stopwatch",
       icon: Icons.calculate,
       page: null,
-      color: const Color.fromARGB(255, 255, 247, 140))
+      color: const Color.fromARGB(255, 255, 247, 140)),
+  AppMenu(
+      title: "Triangle",
+      icon: Icons.calculate,
+      page: null,
+      color: const Color.fromARGB(255, 255, 247, 140)),
+  AppMenu(
+      title: "Premier League Clubs",
+      icon: Icons.calculate,
+      page: null,
+      color: const Color.fromARGB(255, 255, 247, 140)),
 ];

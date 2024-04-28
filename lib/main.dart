@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:tpm_tugas_4/view/home.dart';
-import 'package:tpm_tugas_4/view/login.dart';
+import 'package:tpm_tugas_4/view/auth/login.dart';
 
 void main() async {
   await GetStorage.init('auth');
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Mobile Programming Assignment',
+        title: 'Mobile 4th Assignment',
         theme: ThemeData(
           textSelectionTheme: const TextSelectionThemeData(
               cursorColor: Colors.black,

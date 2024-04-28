@@ -2,36 +2,38 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:tpm_tugas_4/view/home.dart';
-import 'package:tpm_tugas_4/view/register.dart';
+import 'package:tpm_tugas_4/view/auth/login.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final authStorage = GetStorage('auth');
-  String username = "";
-  String password = "";
+class _RegisterPageState extends State<RegisterPage> {
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   bool isError = false;
 
-  Future<void> loginUser() async {
-    const url = "http://localhost:3002/v1/users/login";
+  Future<void> registerUser() async {
+    const url = "http://localhost:3002/v1/users/register";
     String msg = "";
+
     try {
       final response = await http.post(
         Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(
-            <String, String>{'username': username, 'password': password}),
+        body: jsonEncode(<String, String>{
+          'name': _fullNameController.text,
+          'username': _usernameController.text,
+          'password': _passwordController.text
+        }),
       );
       msg = jsonDecode(response.body)["message"];
 
@@ -39,21 +41,12 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(msg), duration: Durations.long2));
 
-      if (response.statusCode == 200) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) {
-            // Ganti val di local storage
-            authStorage.write('username', username);
-            authStorage.write('isLogged', true);
-
-            return HomePage(username: username);
-          }),
-        );
-      } else {
+      if (response.statusCode != 201) {
         setState(() {
           isError = true;
         });
+      } else {
+        Navigator.pop(context);
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -67,6 +60,16 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    _fullNameController.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -76,11 +79,12 @@ class _LoginPageState extends State<LoginPage> {
           child: ListView(scrollDirection: Axis.vertical, children: [
             const SizedBox(height: 20),
             _heading(),
+            _nameField(),
             _usernameField(),
             _passwordField(),
-            _loginButton(context),
-            const Divider(),
             _registerButton(context),
+            const Divider(),
+            _loginButton(context),
             const SizedBox(height: 20)
           ]),
         ),
@@ -97,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Login Page",
+              "Register Page",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             Text(
@@ -108,19 +112,60 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 
+  Widget _nameField() {
+    return Container(
+      padding: const EdgeInsets.only(top: 12),
+      child: TextFormField(
+        enabled: true,
+        controller: _fullNameController,
+        onChanged: (value) {
+          setState(() {
+            if (isError == true) isError = false;
+          });
+        },
+        decoration: InputDecoration(
+            hintText: 'Enter your full name',
+            prefixIcon: Icon(
+              Icons.assignment_ind_rounded,
+              color: (!isError)
+                  ? Colors.black87
+                  : Theme.of(context).colorScheme.error,
+            ),
+            filled: true,
+            fillColor: (isError)
+                ? Theme.of(context).colorScheme.errorContainer
+                : const Color.fromARGB(255, 229, 229, 229),
+            contentPadding: const EdgeInsets.all(12),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: (!isError)
+                        ? Colors.transparent
+                        : Theme.of(context).colorScheme.error)),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: (!isError)
+                        ? Colors.transparent
+                        : Theme.of(context).colorScheme.error))),
+      ),
+    );
+  }
+
   Widget _usernameField() {
     return Container(
       padding: const EdgeInsets.only(top: 12),
       child: TextFormField(
         enabled: true,
+        controller: _usernameController,
         onChanged: (value) {
-          username = value;
           setState(() {
-            if (isError) isError = false;
+            if (isError == true) isError = false;
           });
         },
         decoration: InputDecoration(
-            hintText: 'Username',
+            hintText: 'Enter your username',
             prefixIcon: Icon(
               Icons.person,
               color: (!isError)
@@ -154,15 +199,15 @@ class _LoginPageState extends State<LoginPage> {
       padding: const EdgeInsets.only(top: 12),
       child: TextFormField(
         enabled: true,
+        controller: _passwordController,
         onChanged: (value) {
-          password = value;
           setState(() {
-            if (isError) isError = false;
+            if (isError == true) isError = false;
           });
         },
         obscureText: true,
         decoration: InputDecoration(
-          hintText: 'Password',
+          hintText: 'Enter your password',
           prefixIcon: Icon(
             Icons.key,
             color: (!isError)
@@ -192,7 +237,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _loginButton(BuildContext context) {
+  Widget _registerButton(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 14, bottom: 6),
       width: MediaQuery.of(context).size.width,
@@ -203,20 +248,20 @@ class _LoginPageState extends State<LoginPage> {
                 Theme.of(context).colorScheme.onPrimary, // foreground
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
-        onPressed: loginUser,
-        child: const Text('Login'),
+        onPressed: registerUser,
+        child: const Text('Register'),
       ),
     );
   }
 
-  Widget _registerButton(BuildContext context) {
+  Widget _loginButton(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            "Don't have an account?",
+            "Already have an account?",
           ),
           Container(
             margin: const EdgeInsets.only(top: 6),
@@ -232,11 +277,10 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const RegisterPage()),
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
                   );
                 },
-                child: const Text('Register'),
+                child: const Text('Login'),
               ),
             ),
           ),

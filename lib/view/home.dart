@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:tpm_tugas_4/model/app_menu.dart';
-import 'package:tpm_tugas_4/view/login.dart';
+import 'package:tpm_tugas_4/view/auth/login.dart';
 // import 'package:tpm_tugas_4/view/oddeven.dart';
 // import 'package:tpm_tugas_4/view/sumsub.dart';
 // import 'package:si_bagus/model/mainmenuitem.dart';
