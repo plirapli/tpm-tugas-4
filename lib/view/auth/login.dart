@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:tpm_tugas_4/view/home.dart';
+import 'package:tpm_tugas_4/view/nav_menu/home.dart';
 import 'package:tpm_tugas_4/view/auth/register.dart';
 
 class LoginPage extends StatefulWidget {

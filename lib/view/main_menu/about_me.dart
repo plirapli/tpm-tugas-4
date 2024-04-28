@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tpm_tugas_4/model/members.dart';
-// import 'package:tpm_tugas_4/model/groupitem.dart';
+import 'package:tpm_tugas_4/view/components/heading.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutMePage extends StatefulWidget {
@@ -29,35 +29,13 @@ class _AboutMePageState extends State<AboutMePage> {
           color: const Color.fromARGB(255, 249, 249, 249),
           child: ListView(scrollDirection: Axis.vertical, children: [
             const SizedBox(height: 20),
-            _heading(),
+            const Heading(text: "About Me", subtext: "Get to know me."),
             _groupMenuItem(context, me),
             const SizedBox(height: 20)
           ]),
         ),
       ),
     );
-  }
-
-  Widget _heading() {
-    return Container(
-        alignment: Alignment.centerLeft,
-        child: const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "About Me",
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 23, 47, 39)),
-            ),
-            Text(
-              "Get to know me.",
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(150, 0, 0, 0)),
-            ),
-          ],
-        ));
   }
 
   Widget _groupMenuItem(BuildContext context, Members member) {

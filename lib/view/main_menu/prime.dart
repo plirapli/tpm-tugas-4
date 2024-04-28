@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tpm_tugas_4/utils/is_prime.dart';
+import 'package:tpm_tugas_4/view/components/heading.dart';
 
 class PrimePage extends StatefulWidget {
   const PrimePage({super.key});
@@ -32,35 +33,16 @@ class _PrimePageState extends State<PrimePage> {
           color: const Color.fromARGB(255, 249, 249, 249),
           child: ListView(scrollDirection: Axis.vertical, children: [
             const SizedBox(height: 20),
-            _heading(),
+            const Heading(
+                text: "Prime Number",
+                subtext:
+                    "Identify whether a number is prime or not between 0-1 trillion."),
             _main(),
             const SizedBox(height: 20)
           ]),
         ),
       ),
     );
-  }
-
-  Widget _heading() {
-    return Container(
-        alignment: Alignment.centerLeft,
-        child: const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Prime Number",
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-            Text(
-              "Identify whether a number is prime or not from 0 - 1 trillion.",
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(150, 0, 0, 0)),
-            ),
-          ],
-        ));
   }
 
   Widget _main() {

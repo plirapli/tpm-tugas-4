@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tpm_tugas_4/view/main_menu/about_me.dart';
+import 'package:tpm_tugas_4/view/main_menu/clubs.dart';
 import 'package:tpm_tugas_4/view/main_menu/prime.dart';
 
 class AppMenu {
@@ -10,11 +12,6 @@ class AppMenu {
 }
 
 List<AppMenu> menuItems = [
-  AppMenu(
-    title: "Group Members",
-    icon: Icons.group,
-    page: null,
-  ),
   AppMenu(
     title: "Prime Numbers",
     icon: Icons.pin_outlined,
@@ -28,11 +25,16 @@ List<AppMenu> menuItems = [
   AppMenu(
     title: "Premier League Clubs",
     icon: Icons.sports_soccer,
-    page: null,
+    page: const ClubListPage(),
   ),
   AppMenu(
     title: "Favorite",
     icon: Icons.star,
     page: null,
+  ),
+  AppMenu(
+    title: "About Me",
+    icon: Icons.info_outline,
+    page: const AboutMePage(),
   ),
 ];
