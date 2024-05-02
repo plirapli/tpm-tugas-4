@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tpm_tugas_4/view/main_menu/about_me.dart';
 import 'package:tpm_tugas_4/view/main_menu/clubs.dart';
 import 'package:tpm_tugas_4/view/main_menu/prime.dart';
+import 'package:tpm_tugas_4/view/main_menu/triangle.dart';
 
 class AppMenu {
   String? title;
@@ -20,7 +21,7 @@ List<AppMenu> menuItems = [
   AppMenu(
     title: "Triangle",
     icon: Icons.change_history,
-    page: null,
+    page: const TrianglePage(),
   ),
   AppMenu(
     title: "Premier League Clubs",
