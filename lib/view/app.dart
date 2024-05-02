@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tpm_tugas_4/view/nav_menu/home.dart';
+import 'package:tpm_tugas_4/view/nav_menu/profile.dart';
 
 class AppPage extends StatefulWidget {
   const AppPage({super.key});
@@ -10,54 +11,44 @@ class AppPage extends StatefulWidget {
 
 class _AppPageState extends State<AppPage> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    HomePage(username: "Rafli"),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
+  static final List<Widget> _widgetOptions = <Widget>[
+    const HomePage(username: "Rafli"),
+    const Text('Index 1: Business'),
+    ProfilePage(),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  static const navItem = <BottomNavigationBarItem>[
+    BottomNavigationBarItem(
+      icon: Icon(Icons.home),
+      label: 'Home',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.timer_rounded),
+      label: 'Stopwatch',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.person),
+      label: 'Profile',
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Container(
-            color: Color.fromARGB(255, 246, 246, 246),
-            child: _widgetOptions.elementAt(_selectedIndex)),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          color: const Color.fromARGB(255, 246, 246, 246),
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
         bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.timer_rounded),
-              label: 'Stopwatch',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
+          items: navItem,
           currentIndex: _selectedIndex,
           unselectedItemColor: const Color.fromARGB(255, 169, 169, 169),
           selectedFontSize: 12.0,
           selectedItemColor: Colors.black,
-          onTap: _onItemTapped,
+          onTap: (index) => setState(() => _selectedIndex = index),
         ),
       ),
     );

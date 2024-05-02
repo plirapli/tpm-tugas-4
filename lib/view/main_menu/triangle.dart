@@ -22,7 +22,6 @@ class _TrianglePageState extends State<TrianglePage> {
     return Scaffold(
       appBar: AppBar(title: const Text("Triangle")),
       body: Container(
-        height: MediaQuery.of(context).size.height,
         padding: const EdgeInsets.symmetric(horizontal: 20),
         color: const Color.fromARGB(255, 249, 249, 249),
         child: ListView(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:tpm_tugas_4/model/clubs.dart';
 import 'package:tpm_tugas_4/view/components/heading.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,14 +15,7 @@ class _ClubListPageState extends State<ClubListPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "Group Members",
-            style: TextStyle(color: Colors.white, fontSize: 18),
-          ),
-          iconTheme: const IconThemeData(color: Colors.white),
-          backgroundColor: Colors.black,
-        ),
+        appBar: AppBar(title: const Text("Group Members")),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           color: const Color.fromARGB(255, 249, 249, 249),

@@ -196,16 +196,7 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       padding: const EdgeInsets.only(top: 14, bottom: 6),
       width: MediaQuery.of(context).size.width,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black,
-            foregroundColor:
-                Theme.of(context).colorScheme.onPrimary, // foreground
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
-        onPressed: loginUser,
-        child: const Text('Login'),
-      ),
+      child: TextButton(onPressed: loginUser, child: const Text('Login')),
     );
   }
 
@@ -224,11 +215,9 @@ class _LoginPageState extends State<LoginPage> {
               width: MediaQuery.of(context).size.width,
               child: TextButton(
                 style: TextButton.styleFrom(
-                    foregroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
-                        side: const BorderSide(
-                            color: Color.fromARGB(84, 0, 0, 0), width: 1.5))),
+                  backgroundColor: Colors.black12,
+                  foregroundColor: Colors.black,
+                ),
                 onPressed: () {
                   Navigator.push(
                     context,
