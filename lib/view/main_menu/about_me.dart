@@ -15,16 +15,8 @@ class _AboutMePageState extends State<AboutMePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "Group Members",
-            style: TextStyle(color: Colors.white, fontSize: 18),
-          ),
-          iconTheme: const IconThemeData(color: Colors.white),
-          backgroundColor: Colors.black,
-        ),
+        appBar: AppBar(title: const Text("Group Members")),
         body: Container(
-          height: MediaQuery.of(context).size.height,
           padding: const EdgeInsets.symmetric(horizontal: 20),
           color: const Color.fromARGB(255, 249, 249, 249),
           child: ListView(scrollDirection: Axis.vertical, children: [
@@ -49,7 +41,7 @@ class _AboutMePageState extends State<AboutMePage> {
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
                     color: const Color.fromARGB(24, 23, 47, 39), width: 2),
-                color: const Color.fromARGB(255, 180, 255, 229),
+                color: Colors.black12,
                 image: DecorationImage(
                     image: AssetImage(member.img!), fit: BoxFit.fitHeight))),
         // Buat container tulisan bawah gambar
@@ -69,22 +61,14 @@ class _AboutMePageState extends State<AboutMePage> {
                 Text(
                   member.nim!,
                   style: const TextStyle(
-                      fontSize: 16, color: Color.fromARGB(150, 0, 0, 0)),
+                    fontSize: 16,
+                    color: Color.fromARGB(150, 0, 0, 0),
+                  ),
                 ),
               ],
             ),
             TextButton(
-              style: TextButton.styleFrom(
-                  minimumSize: const Size(46, 46),
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.black,
-                  // minimumSize: Size(48, 48),
-                  // maximumSize: Size(48, 48),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8))),
-              onPressed: () {
-                _launchURL(member.url);
-              },
+              onPressed: () => _launchURL(member.url),
               child: Image.asset('assets/github-mark-white.png', width: 24),
             )
           ],
