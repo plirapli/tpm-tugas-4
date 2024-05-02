@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:tpm_tugas_4/view/auth/login.dart';
+import 'package:tpm_tugas_4/view/nav_menu/profile/help.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
@@ -10,21 +11,10 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      scrollDirection: Axis.vertical,
       children: [
-        const SizedBox(height: 20),
-        Container(
-          height: 200,
-          decoration: const BoxDecoration(
-            color: Colors.black12,
-            borderRadius: BorderRadius.all(Radius.circular(14)),
-            image: DecorationImage(
-              image: AssetImage("assets/rapli.png"),
-              fit: BoxFit.fitHeight,
-            ),
-          ),
-        ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 12),
+        const SizedBox(height: 128, child: Icon(Icons.person, size: 128)),
+        const SizedBox(height: 12),
         const Text(
           "Muhammad Rafli",
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -34,6 +24,20 @@ class ProfilePage extends StatelessWidget {
         biodata("Bermain Gim & Mendengarkan Musik", Icons.smart_toy),
         const SizedBox(height: 20),
         TextButton(
+          onPressed: () => {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HelpPage()),
+            )
+          },
+          child: const Text("Help"),
+        ),
+        const SizedBox(height: 4),
+        TextButton(
+          style: TextButton.styleFrom(
+            backgroundColor: Colors.black12,
+            foregroundColor: Colors.black,
+          ),
           onPressed: () => logoutHandler(context),
           child: const Text("Logout"),
         ),
