@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tpm_tugas_4/model/app_menu.dart';
+import 'package:tpm_tugas_4/model/auth.dart';
 // import 'package:tpm_tugas_4/view/oddeven.dart';
 // import 'package:tpm_tugas_4/view/sumsub.dart';
 // import 'package:si_bagus/model/mainmenuitem.dart';
 
 class HomePage extends StatefulWidget {
-  final String username;
-
-  const HomePage({super.key, required this.username});
+  final SessionCredential data;
+  const HomePage({super.key, required this.data});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Hello, ${widget.username}  👋🏻",
+            "Hello, ${widget.data.name}  👋🏻",
             style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const Text(
