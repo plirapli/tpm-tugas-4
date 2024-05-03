@@ -63,7 +63,7 @@ class _TrianglePageState extends State<TrianglePage> {
       padding: const EdgeInsets.only(top: 14, bottom: 6),
       child: TextButton(
         onPressed: () => calcHandler(),
-        child: const Text('Calc'),
+        child: const Text('Calculate'),
       ),
     );
   }
@@ -83,8 +83,8 @@ class _TrianglePageState extends State<TrianglePage> {
       });
     } else {
       setState(() {
-        keliling = "-";
-        luas = "-";
+        keliling = "😵";
+        luas = "😵";
       });
     }
   }
@@ -95,13 +95,13 @@ class _TrianglePageState extends State<TrianglePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("Keliling"),
+          const Text("Perimeter"),
           Text(
             keliling,
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
-          const Text("Luas"),
+          const Text("Area"),
           Text(
             luas,
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),

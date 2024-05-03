@@ -38,8 +38,6 @@ class _ClubListPageState extends State<ClubListPage> {
 
   Widget _clubListContainer(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-
     int count = (width > 1280)
         ? 4
         : (width > 840)

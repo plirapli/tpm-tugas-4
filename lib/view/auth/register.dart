@@ -19,7 +19,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool isError = false;
 
-  Future<void> registerUser() async {
+  Future<void> _registerUser(BuildContext context) async {
     const url = "http://localhost:3002/v1/users/register";
     String msg = "";
 
@@ -37,25 +37,22 @@ class _RegisterPageState extends State<RegisterPage> {
       );
       msg = jsonDecode(response.body)["message"];
 
-      if (!mounted) return;
+      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(msg), duration: Durations.long2));
 
       if (response.statusCode != 201) {
-        setState(() {
-          isError = true;
-        });
+        setState(() => isError = true);
       } else {
         Navigator.pop(context);
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Can't connect to server."),
-          duration: Durations.long2));
-
-      setState(() {
-        isError = true;
-      });
+      setState(() => isError = true);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text("Can't connect to server."),
+            duration: Durations.long2),
+      );
     }
   }
 
@@ -161,7 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
         controller: _usernameController,
         onChanged: (value) {
           setState(() {
-            if (isError == true) isError = false;
+            if (isError) isError = false;
           });
         },
         decoration: InputDecoration(
@@ -202,7 +199,7 @@ class _RegisterPageState extends State<RegisterPage> {
         controller: _passwordController,
         onChanged: (value) {
           setState(() {
-            if (isError == true) isError = false;
+            if (isError) isError = false;
           });
         },
         obscureText: true,
@@ -223,15 +220,17 @@ class _RegisterPageState extends State<RegisterPage> {
             borderRadius: BorderRadius.circular(8.0),
           ),
           enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: (!isError)
-                      ? Colors.transparent
-                      : Theme.of(context).colorScheme.error)),
+            borderSide: BorderSide(
+                color: (!isError)
+                    ? Colors.transparent
+                    : Theme.of(context).colorScheme.error),
+          ),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: (!isError)
-                      ? Colors.transparent
-                      : Theme.of(context).colorScheme.error)),
+            borderSide: BorderSide(
+                color: (!isError)
+                    ? Colors.transparent
+                    : Theme.of(context).colorScheme.error),
+          ),
         ),
       ),
     );
@@ -241,14 +240,8 @@ class _RegisterPageState extends State<RegisterPage> {
     return Container(
       padding: const EdgeInsets.only(top: 14, bottom: 6),
       width: MediaQuery.of(context).size.width,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black,
-            foregroundColor:
-                Theme.of(context).colorScheme.onPrimary, // foreground
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
-        onPressed: registerUser,
+      child: TextButton(
+        onPressed: () => _registerUser(context),
         child: const Text('Register'),
       ),
     );
@@ -258,7 +251,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Container(
       margin: const EdgeInsets.only(top: 10),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Text(
             "Already have an account?",
@@ -266,14 +259,11 @@ class _RegisterPageState extends State<RegisterPage> {
           Container(
             margin: const EdgeInsets.only(top: 6),
             child: SizedBox(
-              width: MediaQuery.of(context).size.width,
               child: TextButton(
                 style: TextButton.styleFrom(
-                    foregroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
-                        side: const BorderSide(
-                            color: Color.fromARGB(84, 0, 0, 0), width: 1.5))),
+                  backgroundColor: Colors.black12,
+                  foregroundColor: Colors.black,
+                ),
                 onPressed: () {
                   Navigator.push(
                     context,
