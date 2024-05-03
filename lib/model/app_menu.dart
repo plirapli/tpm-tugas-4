@@ -30,12 +30,27 @@ List<AppMenu> menuItems = [
   ),
   AppMenu(
     title: "Favorite",
-    icon: Icons.star,
+    icon: Icons.star_outline,
     page: null,
   ),
   AppMenu(
     title: "About Me",
     icon: Icons.info_outline,
     page: const AboutMePage(),
+  ),
+];
+
+List<BottomNavigationBarItem> navItem = <BottomNavigationBarItem>[
+  const BottomNavigationBarItem(
+    icon: Icon(Icons.home),
+    label: 'Home',
+  ),
+  const BottomNavigationBarItem(
+    icon: Icon(Icons.timer_rounded),
+    label: 'Stopwatch',
+  ),
+  const BottomNavigationBarItem(
+    icon: Icon(Icons.person),
+    label: 'Profile',
   ),
 ];

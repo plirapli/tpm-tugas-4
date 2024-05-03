@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tpm_tugas_4/model/app_menu.dart';
 import 'package:tpm_tugas_4/view/nav_menu/home.dart';
-import 'package:tpm_tugas_4/view/nav_menu/profile.dart';
+import 'package:tpm_tugas_4/view/nav_menu/profile/profile.dart';
+import 'package:tpm_tugas_4/view/nav_menu/stopwatch.dart';
 
 class AppPage extends StatefulWidget {
   const AppPage({super.key});
@@ -14,29 +16,15 @@ class _AppPageState extends State<AppPage> {
 
   static final List<Widget> _widgetOptions = <Widget>[
     const HomePage(username: "Rafli"),
-    const Text('Index 1: Business'),
+    const StopwatchPage(),
     ProfilePage(),
-  ];
-
-  static const navItem = <BottomNavigationBarItem>[
-    BottomNavigationBarItem(
-      icon: Icon(Icons.home),
-      label: 'Home',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.timer_rounded),
-      label: 'Stopwatch',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.person),
-      label: 'Profile',
-    ),
   ];
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(title: Text(navItem[_selectedIndex].label!)),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           color: const Color.fromARGB(255, 246, 246, 246),
