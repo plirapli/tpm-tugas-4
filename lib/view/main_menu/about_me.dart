@@ -3,14 +3,9 @@ import 'package:tpm_tugas_4/model/members.dart';
 import 'package:tpm_tugas_4/view/components/heading.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AboutMePage extends StatefulWidget {
+class AboutMePage extends StatelessWidget {
   const AboutMePage({super.key});
 
-  @override
-  State<AboutMePage> createState() => _AboutMePageState();
-}
-
-class _AboutMePageState extends State<AboutMePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
