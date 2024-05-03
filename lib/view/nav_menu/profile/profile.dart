@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:tpm_tugas_4/model/auth.dart';
+import 'package:tpm_tugas_4/utils/session.dart';
 import 'package:tpm_tugas_4/view/auth/login.dart';
 import 'package:tpm_tugas_4/view/nav_menu/profile/help/help.dart';
 
 class ProfilePage extends StatelessWidget {
-  ProfilePage({super.key});
-
-  final authStorage = GetStorage('auth');
+  final SessionCredential data;
+  const ProfilePage({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +15,12 @@ class ProfilePage extends StatelessWidget {
         const SizedBox(height: 12),
         const SizedBox(height: 128, child: Icon(Icons.person, size: 128)),
         const SizedBox(height: 12),
-        const Text(
-          "Muhammad Rafli",
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        Text(
+          data.name,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        biodata("123210078", Icons.numbers),
-        biodata("IF-H", Icons.class_),
-        biodata("Bermain Gim & Mendengarkan Musik", Icons.smart_toy),
+        const SizedBox(height: 2),
+        Text("@${data.username}", style: const TextStyle(fontSize: 16)),
         const SizedBox(height: 20),
         TextButton(
           onPressed: () => {
@@ -46,21 +45,12 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget biodata(String title, IconData icon) {
-    return Container(
-      margin: const EdgeInsets.only(top: 2),
-      child: Row(
-        children: [Icon(icon, size: 16), const SizedBox(width: 4), Text(title)],
-      ),
-    );
-  }
-
-  void logoutHandler(BuildContext context) {
+  void logoutHandler(BuildContext context) async {
+    await SessionManager.logout();
+    if (!context.mounted) return;
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) {
-        authStorage.remove('username');
-        authStorage.remove('isLogged');
         return const LoginPage();
       }),
     );
