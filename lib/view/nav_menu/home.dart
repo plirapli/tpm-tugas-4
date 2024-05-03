@@ -36,18 +36,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      child: ListView(
-        scrollDirection: Axis.vertical,
-        children: [
-          const SizedBox(height: 20),
-          _heading(),
-          _searchBar(),
-          _mainmenu(context),
-          const SizedBox(height: 20)
-        ],
-      ),
+    return ListView(
+      children: [
+        const SizedBox(height: 20),
+        _heading(),
+        _searchBar(),
+        _mainmenu(context),
+        const SizedBox(height: 20)
+      ],
     );
   }
 

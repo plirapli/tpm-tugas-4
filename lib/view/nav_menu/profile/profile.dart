@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:tpm_tugas_4/view/auth/login.dart';
-import 'package:tpm_tugas_4/view/nav_menu/profile/help.dart';
+import 'package:tpm_tugas_4/view/nav_menu/profile/help/help.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
