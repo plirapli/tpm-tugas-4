@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:tpm_tugas_4/model/auth.dart';
 import 'package:tpm_tugas_4/theme.dart';
+import 'package:tpm_tugas_4/utils/session.dart';
 import 'package:tpm_tugas_4/view/app.dart';
 import 'package:tpm_tugas_4/view/auth/login.dart';
-import 'package:tpm_tugas_4/view/main_menu/clubs.dart';
-import 'package:tpm_tugas_4/view/nav_menu/home.dart';
 
 void main() async {
-  await GetStorage.init('auth');
   runApp(const MyApp());
 }
 
@@ -16,16 +14,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authStorage = GetStorage('auth');
-    bool isLoggedIn = authStorage.read('isLogged') ?? false;
-
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Mobile 4th Assignment',
-        theme: themeData(),
-        // home: isLoggedIn
-        //     ? HomePage(username: authStorage.read('username'))
-        //     : const LoginPage(),
-        home: const AppPage());
+      debugShowCheckedModeBanner: false,
+      title: 'Mobile 4th Assignment',
+      theme: themeData(),
+      home: FutureBuilder<SessionCredential>(
+        future: SessionManager.getCredential(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            SessionCredential? data = snapshot.data;
+            if (data != null) {
+              return AppPage(data: data);
+            } else {
+              return const LoginPage();
+            }
+          }
+        },
+      ),
+    );
   }
 }

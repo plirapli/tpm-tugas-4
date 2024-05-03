@@ -49,6 +49,7 @@ dependencies:
   # retrieve svg img
   flutter_svg: ^2.0.10+1
   accordion: ^2.6.0
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:
