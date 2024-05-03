@@ -1,8 +1,7 @@
 import 'package:accordion/accordion.dart';
 import 'package:accordion/controllers.dart';
 import 'package:flutter/material.dart';
-import 'package:tpm_tugas_4/view/nav_menu/profile/help_get_started.dart';
-import 'package:tpm_tugas_4/view/nav_menu/profile/help_main_menu.dart';
+import 'package:tpm_tugas_4/view/nav_menu/profile/help/content.dart';
 
 /// Main example page
 class HelpPage extends StatelessWidget {
@@ -22,7 +21,7 @@ class HelpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 246, 246, 246),
-      appBar: AppBar(title: const Text('Accordion')),
+      appBar: AppBar(title: const Text('Help')),
       body: Container(
         height: MediaQuery.of(context).size.height,
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -60,16 +59,16 @@ class HelpPage extends StatelessWidget {
             ),
             AccordionSection(
               leftIcon: const Icon(Icons.sports_soccer, color: Colors.white),
-              header: const Text('PL Clubs', style: headerStyle),
+              header: const Text('Premier League Clubs', style: headerStyle),
               content: const Column(
-                children: [GetStartedContent()],
+                children: [ClubsContent()],
               ),
             ),
             AccordionSection(
               leftIcon: const Icon(Icons.timer_outlined, color: Colors.white),
               header: const Text('Stopwatch', style: headerStyle),
               content: const Column(
-                children: [GetStartedContent()],
+                children: [StopwatchContent()],
               ),
             ),
           ],
