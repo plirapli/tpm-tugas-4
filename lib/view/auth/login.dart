@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:http/http.dart' as http;
-
-import 'package:tpm_tugas_4/view/nav_menu/home.dart';
+import 'package:tpm_tugas_4/model/auth.dart';
+import 'package:tpm_tugas_4/utils/login.dart';
+import 'package:tpm_tugas_4/utils/session.dart';
+import 'package:tpm_tugas_4/view/app.dart';
 import 'package:tpm_tugas_4/view/auth/register.dart';
 
 class LoginPage extends StatefulWidget {
@@ -16,53 +16,41 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final authStorage = GetStorage('auth');
+  String msg = "";
   String username = "";
   String password = "";
   bool isError = false;
 
-  Future<void> loginUser() async {
-    const url = "http://localhost:3002/v1/users/login";
-    String msg = "";
+  Future<void> _loginUser(BuildContext context) async {
     try {
-      final response = await http.post(
-        Uri.parse(url),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(
-            <String, String>{'username': username, 'password': password}),
-      );
-      msg = jsonDecode(response.body)["message"];
+      final List response = await Login.login(username, password);
+      final body = response[0];
+      final int statusCode = response[1];
+      msg = body["message"];
 
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(msg), duration: Durations.long2));
-
-      if (response.statusCode == 200) {
+      if (statusCode == 200) {
+        final data = body["data"];
+        await SessionManager.setCredential(jsonEncode(data));
+        SessionCredential credential = await SessionManager.getCredential();
+        if (!context.mounted) return;
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) {
-            // Ganti val di local storage
-            authStorage.write('username', username);
-            authStorage.write('isLogged', true);
-
-            return HomePage(username: username);
-          }),
+          MaterialPageRoute(builder: (context) => AppPage(data: credential)),
         );
       } else {
-        setState(() {
-          isError = true;
-        });
+        setState(() => isError = true);
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Can't connect to server."),
-          duration: Durations.long2));
-
-      setState(() {
-        isError = true;
-      });
+      setState(() => isError = false);
+      msg = "Can't connect to server.";
+    } finally {
+      if (context.mounted) {
+        SnackBar snackBar = SnackBar(
+          content: Text(msg),
+          duration: Durations.long2,
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
     }
   }
 
@@ -100,10 +88,7 @@ class _LoginPageState extends State<LoginPage> {
               "Login Page",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            Text(
-              "Please enter your credentials.",
-              // style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-            ),
+            Text("Please enter your credentials."),
           ],
         ));
   }
@@ -120,31 +105,34 @@ class _LoginPageState extends State<LoginPage> {
           });
         },
         decoration: InputDecoration(
-            hintText: 'Username',
-            prefixIcon: Icon(
-              Icons.person,
-              color: (!isError)
-                  ? Colors.black87
-                  : Theme.of(context).colorScheme.error,
-            ),
-            filled: true,
-            fillColor: (isError)
-                ? Theme.of(context).colorScheme.errorContainer
-                : const Color.fromARGB(255, 229, 229, 229),
-            contentPadding: const EdgeInsets.all(12),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: (!isError)
-                        ? Colors.transparent
-                        : Theme.of(context).colorScheme.error)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: (!isError)
-                        ? Colors.transparent
-                        : Theme.of(context).colorScheme.error))),
+          hintText: 'Username',
+          prefixIcon: Icon(
+            Icons.person,
+            color: (!isError)
+                ? Colors.black87
+                : Theme.of(context).colorScheme.error,
+          ),
+          filled: true,
+          fillColor: (isError)
+              ? Theme.of(context).colorScheme.errorContainer
+              : const Color.fromARGB(255, 229, 229, 229),
+          contentPadding: const EdgeInsets.all(12),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                color: (!isError)
+                    ? Colors.transparent
+                    : Theme.of(context).colorScheme.error),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                color: (!isError)
+                    ? Colors.transparent
+                    : Theme.of(context).colorScheme.error),
+          ),
+        ),
       ),
     );
   }
@@ -178,15 +166,17 @@ class _LoginPageState extends State<LoginPage> {
             borderRadius: BorderRadius.circular(8.0),
           ),
           enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: (!isError)
-                      ? Colors.transparent
-                      : Theme.of(context).colorScheme.error)),
+            borderSide: BorderSide(
+                color: (!isError)
+                    ? Colors.transparent
+                    : Theme.of(context).colorScheme.error),
+          ),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: (!isError)
-                      ? Colors.transparent
-                      : Theme.of(context).colorScheme.error)),
+            borderSide: BorderSide(
+                color: (!isError)
+                    ? Colors.transparent
+                    : Theme.of(context).colorScheme.error),
+          ),
         ),
       ),
     );
@@ -196,7 +186,10 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       padding: const EdgeInsets.only(top: 14, bottom: 6),
       width: MediaQuery.of(context).size.width,
-      child: TextButton(onPressed: loginUser, child: const Text('Login')),
+      child: TextButton(
+        onPressed: () => _loginUser(context),
+        child: const Text('Login'),
+      ),
     );
   }
 
@@ -204,15 +197,12 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       margin: const EdgeInsets.only(top: 10),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
-            "Don't have an account?",
-          ),
+          const Text("Don't have an account?"),
           Container(
             margin: const EdgeInsets.only(top: 6),
             child: SizedBox(
-              width: MediaQuery.of(context).size.width,
               child: TextButton(
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.black12,
@@ -222,7 +212,8 @@ class _LoginPageState extends State<LoginPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const RegisterPage()),
+                      builder: (context) => const RegisterPage(),
+                    ),
                   );
                 },
                 child: const Text('Register'),
