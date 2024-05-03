@@ -1,53 +1,40 @@
-require("dotenv").config();
 const express = require("express");
-const cors = require("cors");
-const connection = require("./config");
-const bcrypt = require("bcrypt");
 const { nanoid } = require("nanoid");
-const app = express();
-const server = require("http").createServer(app);
-const port = process.env.PORT || "3100";
-
-server.listen(port, () => {
-  console.log("Server Connected on: http://localhost:" + port + "/");
-});
-
-app.use(cors());
-app.use(express.json());
+const bcrypt = require("bcrypt");
+const router = express.Router();
+const connection = require("../config");
 
 // [POST] Login existing user
-app.post("/v1/users/login", async (req, res, next) => {
+router.post("/login", async (req, res, next) => {
   try {
     const { username, password } = req.body;
-
-    if (username == "" || password == "") {
+    if (!username || !password) {
       const error = new Error(`Username or password cannot be empty.`);
       error.statusCode = 401;
       throw error;
     }
-
     // Cek user ada apa engga
-    const checkCommand = `SELECT * FROM user WHERE username = ?`;
+    const checkCommand = `SELECT * FROM users WHERE username = ?`;
     const [[user]] = await connection.promise().query(checkCommand, [username]);
-
+    // If user doesn't exist
     if (!user) {
       const error = new Error("Wrong email or password");
       error.statusCode = 404;
       throw error;
     }
-
     const checkPassword = await bcrypt.compare(password, user.password);
-
     // Apabila password salah
     if (!checkPassword) {
       const error = new Error("Wrong email or password");
       error.statusCode = 404;
       throw error;
     }
-
+    const { id, name } = user;
+    const data = { id, name, username: user.username };
     res.status(200).json({
       status: "Success",
       message: "Login Successful",
+      data,
     });
   } catch (error) {
     res.status(error.statusCode || 500).json({
@@ -58,11 +45,11 @@ app.post("/v1/users/login", async (req, res, next) => {
 });
 
 // [POST] Register new user
-app.post("/v1/users/register", async (req, res, next) => {
+router.post("/register", async (req, res, next) => {
   try {
     const { name, username, password } = req.body;
 
-    if (name == "" || username == "" || password == "") {
+    if (!name || !username || !password) {
       const error = new Error(`Cannot be empty.`);
       error.statusCode = 401;
       throw error;
@@ -73,7 +60,7 @@ app.post("/v1/users/register", async (req, res, next) => {
     const id = nanoid();
 
     // Cek apakah username udah ada atau engga
-    const checkCommand = `SELECT id FROM user WHERE username = ?`;
+    const checkCommand = `SELECT id FROM users WHERE username = ?`;
     const [[checkId]] = await connection
       .promise()
       .query(checkCommand, [username]);
@@ -85,7 +72,7 @@ app.post("/v1/users/register", async (req, res, next) => {
     }
 
     // Insert data ke tabel User
-    const inserCommand = `INSERT INTO user VALUES (?, ?, ?, ?)`;
+    const inserCommand = `INSERT INTO users VALUES (?, ?, ?, ?)`;
     await connection
       .promise()
       .query(inserCommand, [id, name, username, hashedPassword]);
@@ -102,3 +89,5 @@ app.post("/v1/users/register", async (req, res, next) => {
     });
   }
 });
+
+module.exports = router;
