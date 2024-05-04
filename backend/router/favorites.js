@@ -8,7 +8,7 @@ router.get("/:user_id", async (req, res, next) => {
     const { user_id } = req.params;
 
     if (!user_id) {
-      const error = new Error("Id cannot be empty.");
+      const error = new Error("User ID cannot be empty.");
       error.statusCode = 400;
       throw error;
     }
@@ -39,14 +39,16 @@ router.post("/:user_id", async (req, res, next) => {
       error.statusCode = 401;
       throw error;
     }
+    if (club_id <= 0 || club_id > 20) {
+      const error = new Error("Club not found.");
+      error.statusCode = 404;
+      throw error;
+    }
 
-    //
     const checkQuery = `SELECT * FROM favorites WHERE user_id = ? AND club_id = ?`;
     const [favorites] = await connection
       .promise()
       .query(checkQuery, [user_id, club_id]);
-
-    console.log(favorites);
 
     if (favorites.length > 0) {
       const error = new Error("Club already exist.");
@@ -54,8 +56,8 @@ router.post("/:user_id", async (req, res, next) => {
       throw error;
     }
 
-    // const query = "INSERT INTO favorites (user_id, club_id) VALUES (?, ?)";
-    // await connection.promise().query(query, [user_id, club_id]);
+    const query = "INSERT INTO favorites (user_id, club_id) VALUES (?, ?)";
+    await connection.promise().query(query, [user_id, club_id]);
 
     res.status(201).json({
       status: "Success",
