@@ -10,7 +10,7 @@ router.post("/login", async (req, res, next) => {
     const { username, password } = req.body;
     if (!username || !password) {
       const error = new Error(`Username or password cannot be empty.`);
-      error.statusCode = 401;
+      error.statusCode = 400;
       throw error;
     }
     // Cek user ada apa engga
@@ -51,7 +51,7 @@ router.post("/register", async (req, res, next) => {
 
     if (!name || !username || !password) {
       const error = new Error(`Cannot be empty.`);
-      error.statusCode = 401;
+      error.statusCode = 400;
       throw error;
     }
 
@@ -67,15 +67,15 @@ router.post("/register", async (req, res, next) => {
 
     if (checkId) {
       const error = new Error(`Username ${username} already exist!`);
-      error.statusCode = 401;
+      error.statusCode = 403;
       throw error;
     }
 
     // Insert data ke tabel User
-    const inserCommand = `INSERT INTO users VALUES (?, ?, ?, ?)`;
+    const query = `INSERT INTO users VALUES (?, ?, ?, ?)`;
     await connection
       .promise()
-      .query(inserCommand, [id, name, username, hashedPassword]);
+      .query(query, [id, name, username, hashedPassword]);
 
     // Send response
     res.status(201).json({
