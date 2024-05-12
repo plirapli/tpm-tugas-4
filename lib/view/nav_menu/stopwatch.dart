@@ -33,10 +33,12 @@ class _StopwatchPageState extends State<StopwatchPage> {
         .toString()
         .padLeft(3, "0")
         .substring(0, 2);
-    setState(() {
-      _time = "$m:$s";
-      _miliSecond = ms;
-    });
+    if (mounted) {
+      setState(() {
+        _time = "$m:$s";
+        _miliSecond = ms;
+      });
+    }
   }
 
   void _startStopwatch() {
