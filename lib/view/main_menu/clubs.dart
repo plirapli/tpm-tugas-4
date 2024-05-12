@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tpm_tugas_4/model/clubs.dart';
+import 'package:tpm_tugas_4/model/favorites.dart';
+import 'package:tpm_tugas_4/utils/favorite.dart';
 import 'package:tpm_tugas_4/view/components/heading.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -12,6 +14,37 @@ class ClubListPage extends StatefulWidget {
 }
 
 class _ClubListPageState extends State<ClubListPage> {
+  String msg = "";
+  Future? _future;
+  List<int> favClubsId = [];
+
+  Future<void> _favHandler(BuildContext context, bool isFav, String id) async {
+    try {
+      final response = await (isFav
+          ? Favorite.deleteFav(widget.id, id)
+          : Favorite.addFav(widget.id, id));
+      msg = response["message"];
+    } catch (e) {
+      msg = "Can't connect to server.";
+    } finally {
+      if (context.mounted) {
+        SnackBar snackBar = SnackBar(
+          content: Text(msg),
+          duration: Durations.long2,
+        );
+        ScaffoldMessenger.of(context)
+          ..removeCurrentSnackBar()
+          ..showSnackBar(snackBar);
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _future = Favorite.getFavByUserId(widget.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -29,10 +62,32 @@ class _ClubListPageState extends State<ClubListPage> {
                     "List of all clubs participating in the Premier League 2023/2024.",
               ),
               const SizedBox(height: 12),
-              _clubListContainer(context),
+              _buildClubs(),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildClubs() {
+    return Expanded(
+      child: FutureBuilder(
+        future: _future,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text("Error: ${snapshot.error}");
+          } else if (snapshot.hasData) {
+            Favorites favClubModel = Favorites.fromJson(snapshot.data);
+            final bool isError = favClubModel.status == "Error";
+            if (isError) return _buildError(favClubModel.message!);
+
+            // Filter club
+            favClubsId = [...?favClubModel.data];
+            return _clubListContainer(context);
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
       ),
     );
   }
@@ -45,20 +100,18 @@ class _ClubListPageState extends State<ClubListPage> {
             ? 3
             : 2;
 
-    return Expanded(
-      child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: count,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            childAspectRatio: width > 840 ? 1 : 0.8),
-        itemBuilder: (context, index) => _clubListItem(context, index),
-        itemCount: clubList.length,
-      ),
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: count,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+          childAspectRatio: width > 840 ? 1 : 0.8),
+      itemBuilder: (context, index) => _clubItem(context, clubList[index]),
+      itemCount: clubList.length,
     );
   }
 
-  Widget _clubListItem(BuildContext context, int index) {
+  Widget _clubItem(BuildContext context, Clubs club) {
     return Container(
       // height: 89,
       padding: const EdgeInsets.all(8),
@@ -71,7 +124,7 @@ class _ClubListPageState extends State<ClubListPage> {
         children: [
           Expanded(
             child: Image.asset(
-              clubList[index].logo,
+              club.logo,
               fit: BoxFit.cover,
             ),
           ),
@@ -80,12 +133,12 @@ class _ClubListPageState extends State<ClubListPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                clubList[index].name,
+                club.name,
                 style:
                     const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
               Text(
-                clubList[index].code,
+                club.code,
                 style: const TextStyle(
                     fontSize: 14, color: Color.fromARGB(128, 0, 0, 0)),
               ),
@@ -94,16 +147,8 @@ class _ClubListPageState extends State<ClubListPage> {
                 children: [
                   Expanded(
                     child: TextButton(
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.black,
-                        fixedSize: const Size.fromHeight(38),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                      ),
                       onPressed: () {
-                        _launchURL(clubList[index].url);
+                        _launchURL(club.url);
                       },
                       child: const Text('Visit Website'),
                     ),
@@ -111,7 +156,12 @@ class _ClubListPageState extends State<ClubListPage> {
                   const SizedBox(width: 6),
                   IconButton(
                     style: IconButton.styleFrom(
-                      foregroundColor: Colors.black26,
+                      foregroundColor: favClubsId.contains(club.id)
+                          ? Colors.red
+                          : Colors.black26,
+                      backgroundColor: favClubsId.contains(club.id)
+                          ? Colors.red.shade50
+                          : Colors.transparent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(4),
                         side: const BorderSide(
@@ -120,7 +170,15 @@ class _ClubListPageState extends State<ClubListPage> {
                         ),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      await _favHandler(
+                        context,
+                        favClubsId.contains(club.id),
+                        (club.id).toString(),
+                      );
+                      setState(() {});
+                      _future = Favorite.getFavByUserId(widget.id);
+                    },
                     icon: const Icon(Icons.favorite),
                   ),
                 ],
@@ -128,6 +186,20 @@ class _ClubListPageState extends State<ClubListPage> {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildError(String msg) {
+    return Container(
+      padding: const EdgeInsets.only(top: 4),
+      child: Text(
+        msg,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

@@ -82,7 +82,6 @@ class _FavoritePageState extends State<FavoritePage> {
 
             // Filter club
             favClubId = [...?favClubModel.data];
-            print(favClubId);
             favClubs = clubList
                 .where((club) => favClubId.any((id) => club.id == id))
                 .toList();
