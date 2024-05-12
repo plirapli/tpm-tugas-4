@@ -9,7 +9,8 @@ router.post("/login", async (req, res, next) => {
   try {
     const { username, password } = req.body;
     if (!username || !password) {
-      const error = new Error(`Username or password cannot be empty.`);
+      const msg = `${!username ? "Username" : "Password"} cannot be empty`;
+      const error = new Error(msg);
       error.statusCode = 400;
       throw error;
     }
@@ -50,7 +51,10 @@ router.post("/register", async (req, res, next) => {
     const { name, username, password } = req.body;
 
     if (!name || !username || !password) {
-      const error = new Error(`Cannot be empty.`);
+      const msg = `${
+        !name ? "Name" : !username ? "Username" : "Password"
+      } cannot be empty`;
+      const error = new Error(msg);
       error.statusCode = 400;
       throw error;
     }
