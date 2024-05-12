@@ -11,15 +11,20 @@ class SessionManager {
     await prefs.setString(_credential, data);
   }
 
-  static Future<SessionCredential> getCredential() async {
+  static Future<SessionCredential?> getCredential() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final result = jsonDecode(prefs.getString(_credential)!);
-    SessionCredential data = SessionCredential(
-      id: result["id"],
-      name: result["name"],
-      username: result["username"],
-    );
-    return data;
+    final credential = prefs.getString(_credential);
+
+    if (credential != null) {
+      final result = jsonDecode(credential);
+      SessionCredential data = SessionCredential(
+        id: result["id"],
+        name: result["name"],
+        username: result["username"],
+      );
+      return data;
+    }
+    return null;
   }
 
   static Future<void> logout() async {

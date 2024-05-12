@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:tpm_tugas_4/model/auth.dart';
-import 'package:tpm_tugas_4/utils/login.dart';
+import 'package:tpm_tugas_4/utils/auth.dart';
 import 'package:tpm_tugas_4/utils/session.dart';
 import 'package:tpm_tugas_4/view/app.dart';
 import 'package:tpm_tugas_4/view/auth/register.dart';
@@ -23,20 +23,21 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _loginUser(BuildContext context) async {
     try {
-      final List response = await Login.login(username, password);
-      final body = response[0];
-      final int statusCode = response[1];
-      msg = body["message"];
+      final response = await Auth.login(username, password);
+      final status = response["status"];
+      msg = response["message"];
 
-      if (statusCode == 200) {
-        final data = body["data"];
+      if (status == "Success") {
+        final data = response["data"];
         await SessionManager.setCredential(jsonEncode(data));
-        SessionCredential credential = await SessionManager.getCredential();
+        SessionCredential? credential = await SessionManager.getCredential();
         if (!context.mounted) return;
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => AppPage(data: credential)),
-        );
+        if (credential != null) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => AppPage(data: credential)),
+          );
+        }
       } else {
         setState(() => isError = true);
       }
@@ -49,7 +50,9 @@ class _LoginPageState extends State<LoginPage> {
           content: Text(msg),
           duration: Durations.long2,
         );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        ScaffoldMessenger.of(context)
+          ..removeCurrentSnackBar()
+          ..showSnackBar(snackBar);
       }
     }
   }
@@ -208,13 +211,20 @@ class _LoginPageState extends State<LoginPage> {
                   backgroundColor: Colors.black12,
                   foregroundColor: Colors.black,
                 ),
-                onPressed: () {
-                  Navigator.push(
+                onPressed: () async {
+                  final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const RegisterPage(),
                     ),
                   );
+
+                  if (result != null) {
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context)
+                      ..removeCurrentSnackBar()
+                      ..showSnackBar(SnackBar(content: Text(result)));
+                  }
                 },
                 child: const Text('Register'),
               ),

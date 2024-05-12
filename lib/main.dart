@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Mobile 4th Assignment',
       theme: themeData(),
-      home: FutureBuilder<SessionCredential>(
+      home: FutureBuilder<SessionCredential?>(
         future: SessionManager.getCredential(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
