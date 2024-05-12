@@ -13,7 +13,8 @@ router.get("/:user_id", async (req, res, next) => {
       throw error;
     }
     const query = `SELECT * FROM favorites WHERE user_id = ?`;
-    const [favorites] = await connection.promise().query(query, [user_id]);
+    let [favorites] = await connection.promise().query(query, [user_id]);
+    favorites = favorites.map((fav) => fav.club_id);
 
     res.status(200).json({
       status: "Success",
