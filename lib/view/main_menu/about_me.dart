@@ -10,7 +10,7 @@ class AboutMePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text("Group Members")),
+        appBar: AppBar(title: const Text("About Me")),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           color: const Color.fromARGB(255, 249, 249, 249),

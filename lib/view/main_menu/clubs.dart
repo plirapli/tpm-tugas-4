@@ -15,13 +15,13 @@ class _ClubListPageState extends State<ClubListPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text("Group Members")),
+        appBar: AppBar(title: const Text("Premier League Clubs")),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           color: const Color.fromARGB(255, 249, 249, 249),
           child: Column(
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
               const Heading(
                 text: "Premier League Clubs",
                 subtext:

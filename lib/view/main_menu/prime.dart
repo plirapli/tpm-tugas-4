@@ -18,7 +18,7 @@ class _PrimePageState extends State<PrimePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text("Prime Number Check")),
+        appBar: AppBar(title: const Text("Prime Number")),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           color: const Color.fromARGB(255, 249, 249, 249),
