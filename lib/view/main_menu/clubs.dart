@@ -4,7 +4,8 @@ import 'package:tpm_tugas_4/view/components/heading.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ClubListPage extends StatefulWidget {
-  const ClubListPage({super.key});
+  final String id;
+  const ClubListPage({super.key, required this.id});
 
   @override
   State<ClubListPage> createState() => _ClubListPageState();

@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tpm_tugas_4/view/main_menu/about_me.dart';
-import 'package:tpm_tugas_4/view/main_menu/clubs.dart';
-import 'package:tpm_tugas_4/view/main_menu/prime.dart';
-import 'package:tpm_tugas_4/view/main_menu/triangle.dart';
 
 class AppMenu {
   String? title;
@@ -11,34 +7,6 @@ class AppMenu {
 
   AppMenu({this.title, this.icon, this.page});
 }
-
-List<AppMenu> menuItems = [
-  AppMenu(
-    title: "Prime Numbers",
-    icon: Icons.pin_outlined,
-    page: const PrimePage(),
-  ),
-  AppMenu(
-    title: "Triangle",
-    icon: Icons.change_history,
-    page: const TrianglePage(),
-  ),
-  AppMenu(
-    title: "Premier League Clubs",
-    icon: Icons.sports_soccer,
-    page: const ClubListPage(),
-  ),
-  AppMenu(
-    title: "Favorite",
-    icon: Icons.star_outline,
-    page: null,
-  ),
-  AppMenu(
-    title: "About Me",
-    icon: Icons.info_outline,
-    page: const AboutMePage(),
-  ),
-];
 
 List<BottomNavigationBarItem> navItem = <BottomNavigationBarItem>[
   const BottomNavigationBarItem(
