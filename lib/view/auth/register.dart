@@ -1,9 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
+import 'package:tpm_tugas_4/utils/auth.dart';
 import 'package:tpm_tugas_4/view/auth/login.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -14,52 +11,40 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  bool isError = false;
+  String msg = "";
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool isError = false;
 
   Future<void> _registerUser(BuildContext context) async {
-    const url = "http://localhost:3002/v1/users/register";
-    String msg = "";
-
     try {
-      final response = await http.post(
-        Uri.parse(url),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'name': _fullNameController.text,
-          'username': _usernameController.text,
-          'password': _passwordController.text
-        }),
+      final response = await Auth.register(
+        _fullNameController.text,
+        _usernameController.text,
+        _passwordController.text,
       );
-      msg = jsonDecode(response.body)["message"];
+      final status = response["status"];
+      msg = response["message"];
 
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(msg), duration: Durations.long2));
-
-      if (response.statusCode != 201) {
-        setState(() => isError = true);
+      if (status == "Success") {
+        if (!context.mounted) return;
+        Navigator.pop(context, msg);
       } else {
-        Navigator.pop(context);
+        throw Exception(msg);
       }
     } catch (e) {
       setState(() => isError = true);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text("Can't connect to server."),
-            duration: Durations.long2),
-      );
+      SnackBar snackBar = SnackBar(content: Text(e.toString()));
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(snackBar);
     }
   }
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is removed from the
-    // widget tree.
     _fullNameController.dispose();
     _usernameController.dispose();
     _passwordController.dispose();
@@ -162,31 +147,34 @@ class _RegisterPageState extends State<RegisterPage> {
           });
         },
         decoration: InputDecoration(
-            hintText: 'Enter your username',
-            prefixIcon: Icon(
-              Icons.person,
-              color: (!isError)
-                  ? Colors.black87
-                  : Theme.of(context).colorScheme.error,
-            ),
-            filled: true,
-            fillColor: (isError)
-                ? Theme.of(context).colorScheme.errorContainer
-                : const Color.fromARGB(255, 229, 229, 229),
-            contentPadding: const EdgeInsets.all(12),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: (!isError)
-                        ? Colors.transparent
-                        : Theme.of(context).colorScheme.error)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: (!isError)
-                        ? Colors.transparent
-                        : Theme.of(context).colorScheme.error))),
+          hintText: 'Enter your username',
+          prefixIcon: Icon(
+            Icons.person,
+            color: (!isError)
+                ? Colors.black87
+                : Theme.of(context).colorScheme.error,
+          ),
+          filled: true,
+          fillColor: (isError)
+              ? Theme.of(context).colorScheme.errorContainer
+              : const Color.fromARGB(255, 229, 229, 229),
+          contentPadding: const EdgeInsets.all(12),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                color: (!isError)
+                    ? Colors.transparent
+                    : Theme.of(context).colorScheme.error),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                color: (!isError)
+                    ? Colors.transparent
+                    : Theme.of(context).colorScheme.error),
+          ),
+        ),
       ),
     );
   }
