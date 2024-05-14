@@ -5,7 +5,7 @@ import 'package:tpm_tugas_4/view/main_menu/about_me.dart';
 import 'package:tpm_tugas_4/view/main_menu/clubs.dart';
 import 'package:tpm_tugas_4/view/main_menu/favorite.dart';
 import 'package:tpm_tugas_4/view/main_menu/prime.dart';
-import 'package:tpm_tugas_4/view/main_menu/triangle.dart';
+import 'package:tpm_tugas_4/view/main_menu/triangle/main.dart';
 // import 'package:tpm_tugas_4/view/oddeven.dart';
 // import 'package:tpm_tugas_4/view/sumsub.dart';
 // import 'package:si_bagus/model/mainmenuitem.dart';
