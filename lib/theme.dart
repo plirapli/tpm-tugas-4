@@ -4,6 +4,8 @@ ThemeData themeData() {
   return ThemeData(
     colorScheme: ColorScheme.fromSeed(
       seedColor: const Color.fromARGB(255, 70, 216, 189),
+      primary: Colors.black,
+      secondary: Colors.white,
     ),
     appBarTheme: const AppBarTheme(
       foregroundColor: Colors.white,
