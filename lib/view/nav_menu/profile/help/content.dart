@@ -71,7 +71,7 @@ class StopwatchContent extends StatelessWidget {
   const StopwatchContent({super.key});
 
   static const List<String> textList = [
-    "Premier League Clubs merupakan salah satu fitur dalam aplikasi ini yang berfungsi untuk mengukur waktu.",
+    "Stopwatch merupakan salah satu fitur dalam aplikasi ini yang berfungsi untuk mengukur waktu.",
     "Pengguna bisa mengakses fitur ini dengan masuk ke menu \"Stopwatch\" yang berada di tengah.",
     "Pengguna dapat memulai pengukuran waktu dengan menekan tombol \"start\" ▶️.",
     "Pengguna juga dapat menghentikan pengukuran waktu dengn menekan tombol \"pause\" ⏸️.",
