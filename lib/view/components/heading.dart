@@ -21,7 +21,10 @@ class Heading extends StatelessWidget {
           ),
           Text(
             subtext,
-            style: TextStyle(fontSize: 16, color: Color.fromARGB(150, 0, 0, 0)),
+            style: const TextStyle(
+              fontSize: 16,
+              color: Color.fromARGB(150, 0, 0, 0),
+            ),
           ),
         ],
       ),
