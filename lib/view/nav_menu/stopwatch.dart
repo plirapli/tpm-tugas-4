@@ -18,7 +18,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
   @override
   void dispose() {
     super.dispose();
-    _stopwatch.stop();
+    _stopwatch.stop(); // stop stopwatch if dismount
   }
 
   void _startTimer() => Timer(_duration, _keepRunning);
@@ -33,6 +33,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
         .toString()
         .padLeft(3, "0")
         .substring(0, 2);
+    // Check if stopwatch still mounted
     if (mounted) {
       setState(() {
         _time = "$m:$s";
@@ -41,17 +42,20 @@ class _StopwatchPageState extends State<StopwatchPage> {
     }
   }
 
+  // start btn handler
   void _startStopwatch() {
     setState(() => _isRunning = true);
     _stopwatch.start();
     _startTimer();
   }
 
+  // pause btn handler
   void _pauseStopwatch() {
     setState(() => _isRunning = false);
     _stopwatch.stop();
   }
 
+  // reset btn handler
   void _resetStopwatch() {
     setState(() {
       _isRunning = false;
