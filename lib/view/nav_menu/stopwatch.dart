@@ -27,7 +27,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
     if (_stopwatch.isRunning) {
       _startTimer();
     }
-    String h = (_stopwatch.elapsed.inHours % 60).toString().padLeft(2, "0");
+    String h = (_stopwatch.elapsed.inHours % 100).toString().padLeft(2, "0");
     String m = (_stopwatch.elapsed.inMinutes % 60).toString().padLeft(2, "0");
     String s = (_stopwatch.elapsed.inSeconds % 60).toString().padLeft(2, "0");
     String ms = (_stopwatch.elapsed.inMilliseconds % 1000)
