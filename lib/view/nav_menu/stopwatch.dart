@@ -11,7 +11,7 @@ class StopwatchPage extends StatefulWidget {
 class _StopwatchPageState extends State<StopwatchPage> {
   final _duration = const Duration();
   final _stopwatch = Stopwatch();
-  String _time = "00:00";
+  String _time = "00:00:00";
   String _miliSecond = "00";
   bool _isRunning = false;
 
@@ -27,8 +27,9 @@ class _StopwatchPageState extends State<StopwatchPage> {
     if (_stopwatch.isRunning) {
       _startTimer();
     }
-    String s = (_stopwatch.elapsed.inSeconds % 60).toString().padLeft(2, "0");
+    String h = (_stopwatch.elapsed.inHours % 60).toString().padLeft(2, "0");
     String m = (_stopwatch.elapsed.inMinutes % 60).toString().padLeft(2, "0");
+    String s = (_stopwatch.elapsed.inSeconds % 60).toString().padLeft(2, "0");
     String ms = (_stopwatch.elapsed.inMilliseconds % 1000)
         .toString()
         .padLeft(3, "0")
@@ -36,7 +37,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
     // Check if stopwatch still mounted
     if (mounted) {
       setState(() {
-        _time = "$m:$s";
+        _time = "$h:$m:$s";
         _miliSecond = ms;
       });
     }
@@ -59,7 +60,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
   void _resetStopwatch() {
     setState(() {
       _isRunning = false;
-      _time = "00:00";
+      _time = "00:00:00";
       _miliSecond = "00";
     });
     _stopwatch.stop();
@@ -78,7 +79,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
             Text(
               _time,
               style: const TextStyle(
-                fontSize: 84,
+                fontSize: 64,
                 height: 0.9,
                 fontWeight: FontWeight.bold,
               ),
