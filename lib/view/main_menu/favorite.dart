@@ -85,10 +85,23 @@ class _FavoritePageState extends State<FavoritePage> {
             favClubs = clubList
                 .where((club) => favClubId.any((id) => club.id == id))
                 .toList();
-            return ListView.builder(
-              itemBuilder: (context, index) => _clubListItem(context, index),
-              itemCount: favClubs.length,
-            );
+
+            if (favClubs.isNotEmpty) {
+              return ListView.builder(
+                itemBuilder: (context, index) => _clubListItem(context, index),
+                itemCount: favClubs.length,
+              );
+            } else {
+              return Center(
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 64),
+                  child: const Text(
+                    "No favorite club.",
+                    style: TextStyle(fontSize: 18, color: Colors.black54),
+                  ),
+                ),
+              );
+            }
           }
           return const Center(child: CircularProgressIndicator());
         },
