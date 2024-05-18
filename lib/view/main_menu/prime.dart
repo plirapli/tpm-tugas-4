@@ -52,7 +52,7 @@ class _PrimePageState extends State<PrimePage> {
       textAlign: TextAlign.center,
       style: const TextStyle(fontSize: 32),
       inputFormatters: <TextInputFormatter>[
-        FilteringTextInputFormatter.allow(RegExp(r'^[1-9]{0,12}')),
+        FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]{0,12}')),
       ],
       decoration: const InputDecoration(
         enabledBorder: UnderlineInputBorder(
