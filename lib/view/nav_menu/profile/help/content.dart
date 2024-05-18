@@ -40,10 +40,10 @@ class TriangleContent extends StatelessWidget {
   const TriangleContent({super.key});
 
   static const List<String> textList = [
-    "Triangle merupakan salah satu fitur dalam aplikasi ini yang berfungsi untuk menghitung luas dan keliling dari bangun segitiga siku-siku.",
+    "Triangle merupakan salah satu fitur dalam aplikasi ini yang berfungsi untuk menghitung luas dan keliling dari 3 jenis bangun segitiga, yaitu segitiga siku-siku, sama sisi, dan sama kaki.",
     "Pengguna bisa mengakses fitur ini dengan masuk ke menu utama, lalu memilih menu \"Triangle\".",
-    "Pengguna akan diminta untuk memasukkan alas dan tinggi pada form yang tersedia.",
-    "Setelah pengguna memasukkan alas dan tinggi, pengguna bisa menekan tombol, \"Calculate\" untuk melihat hasil perhitungan keliling dan luas dari segitiga siku-siku.",
+    "Pengguna akan diminta untuk memasukkan alas dan tinggi pada form yang tersedia. (Khusus untuk seigitiga sama sisi pengguna cukup memasukkan satu sisinya saja)",
+    "Setelah pengguna memasukkan alas dan tinggi, pengguna bisa menekan tombol, \"Calculate\" untuk melihat hasil perhitungan keliling dan luas dari segitiga yang dipilih.",
     "Jika pengguna tidak memasukkan alas atau tinggi dan langsung menekan tombol \"Calculate\", maka akan tampil simbol \"😵\"."
   ];
 
