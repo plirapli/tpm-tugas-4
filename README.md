@@ -1,16 +1,18 @@
 # tpm_tugas_4
 
-A new Flutter project.
+Tugas TPM 4
 
-## Getting Started
+## How to start
 
-This project is a starting point for a Flutter application.
+1. Nyalakan mysql server, buat db baru bernama tpm-tugas-4.sql
+2. Masuk ke direktori /backend dengan perintah `cd backend/`
+3. Import file db bernama tpm-tugas-4.sql pada direktori /backend
+4. Jalankan perintah `npm i` untuk menginstall node dependencies
+5. Isi file .env berdasarkan file .env.example pada direktori /backend
+6. Jalankan web service (`npm run dev`) pada direktori /backend
+7. Jalankan project flutter (`flutter run`) pada direktori root
+8. 🏃🏻‍♂️
 
-A few resources to get you started if this is your first Flutter project:
+## Screenshot &nbsp; 📸
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![app screenshot](ss.png)
