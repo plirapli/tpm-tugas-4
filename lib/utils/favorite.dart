@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Favorite {
-  static const _url = "http://localhost:3002/v1/favorites/";
+  static const _url = "http://localhost:3005/v1/favorites/";
   static const _header = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8'
   };
